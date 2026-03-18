@@ -32,6 +32,9 @@ int main() {
     char nome1[50];
     char nome2[50];
     char nome3[50];
+    int maiorP = 0;
+	int menorP = 0;
+	int mediaP = 0;
     
     
     printf("------Deseja jogar contra  quantas pessoas?------\n"); //quantidade de jogadores
@@ -157,9 +160,6 @@ int main() {
 		    char letra[20];
 		    int pontos = 2;
 		    int continuar = 0;
-		    int maiorP = 0;
-		    int menorP = 0;
-		    int mediaP = 0;
 		    int vetPontos[3];
 		    
 		
@@ -202,11 +202,10 @@ int main() {
 		        
 		        if (!acertou) {
 		            tentativas++;
-		            vetPonto[0] -= 1;
+		            pontos = pontos - 1;
 		            printf("Letra incorreta!\n");
 		        } else {
-		        	
-		        	vetPonto[0] += 3;
+		        	pontos = pontos + 3;
 		            printf("Boa! Letra correta!\n");
 		        }
 		        
@@ -216,7 +215,7 @@ int main() {
 		        getchar(); // consome o '\n' anterior
 		        getchar(); // espera o Enter
 			}
-			pontosp2p[i] = vetPonto[0];
+			pontosp2p[i] = pontos;
 		        
 		        if(pontosp2p[i] < pontosp2p[menorP]){
 		        	menorP = i;
@@ -406,7 +405,7 @@ int main() {
 		    	}
 		
 		    printf("A palavra era: %s\n", palavraSecreta);
-		    system("pause");
+		   	system("pause");
 		   
 		}
 		printf("O primeiro lugar é: %c %d pontos\n", pontosp2p[maiorP]);
