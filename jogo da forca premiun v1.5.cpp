@@ -6,7 +6,7 @@
 #include <locale.h>
 #include <iostream>
 
-//Feito por João Victor Dalbem
+//Feito por JoÃ£o Victor Dalbem
 //Forca feito em c++
 
 
@@ -26,7 +26,7 @@ void limpaTela() {
 
 int main() {
 	setlocale(LC_ALL,"Portuguese");
-    //Lista de palavras possíveis
+    //Lista de palavras possÃ­veis
     int pontosp2p[3];
     int pessoas;
     char nome1[50];
@@ -98,7 +98,7 @@ int main() {
 		    	"elefante",
 				"girafa",
 				"canguru",
-				"tubarão",
+				"tubarÃ£o",
 				"arara",
 				"leao",
 				"coruja",
@@ -114,7 +114,7 @@ int main() {
 				"brasil",
 				"canada",
 				"japao",
-				"frança",
+				"franÃ§a",
 				"india",
 				"egito",
 				"italia",
@@ -140,7 +140,7 @@ int main() {
 		
 		    int totalPalavras = sizeof(listaPalavras) / sizeof(listaPalavras[0]);
 		
-		    //Inicializa o gerador de números aleatórios
+		    //Inicializa o gerador de nÃºmeros aleatÃ³rios
 		    srand(time(NULL));
 		    int indice = rand() % totalPalavras;
 		
@@ -177,7 +177,7 @@ int main() {
 		        for (int i = 0; i < tamanho; i++) {
 		            printf("%c ", palavraOculta[i]);
 		        }
-		        printf("\n\nAs letras ja colocadas são: ");
+		        printf("\n\nAs letras ja colocadas sÃ£o: ");
 		    	for(int i = 0; i <= j - 1; i++){
 		    		printf("%c ", letra[i]);
 				}
@@ -234,12 +234,13 @@ int main() {
 			
 		    printf("A palavra era: %s\n", palavraSecreta);
 		    system("pause");
-		    printf("Em primiro lugar teve: %d pontos\n", pontosp2p[maiorP]);
-		    printf("Em segundo lugar teve: %d pontos\n",pontosp2p[mediaP]);
-		    printf("Em terceiro lugar teve: %d pontos\n",pontosp2p[menorP]);
+		    
 		    
 		    
 		}
+		printf("Em primiro lugar teve: %d pontos\n", pontosp2p[maiorP]);
+		printf("Em segundo lugar teve: %d pontos\n",pontosp2p[mediaP]);
+		printf("Em terceiro lugar teve: %d pontos\n",pontosp2p[menorP]);
 	}
 	
 	if(pessoas == 2){
@@ -274,9 +275,9 @@ int main() {
 		    	"elefante",
 				"girafa",
 				"canguru",
-				"tubarão",
+				"tubarÃ£o",
 				"arara",
-				"leão",
+				"leÃ£o",
 				"coruja",
 				"camaleao",
 				"abacaxi",
@@ -288,14 +289,14 @@ int main() {
 				"kiwi",
 				"melancia",
 				"brasil",
-				"canadá",
-				"japão",
-				"frança",
+				"canadÃ¡",
+				"japÃ£o",
+				"franÃ§a",
 				"india",
 				"egito",
-				"itália",
-				"méxico",
-				"médico",
+				"itÃ¡lia",
+				"mÃ©xico",
+				"mÃ©dico",
 				"professor",
 				"engenheiro",
 				"advogado",
@@ -316,7 +317,7 @@ int main() {
 		
 		    int totalPalavras = sizeof(listaPalavras) / sizeof(listaPalavras[0]);
 		
-		    //Inicializa o gerador de números aleatórios
+		    //Inicializa o gerador de nÃºmeros aleatÃ³rios
 		    srand(time(NULL));
 		    int indice = rand() % totalPalavras;
 		
@@ -351,7 +352,7 @@ int main() {
 		        for (int i = 0; i < tamanho; i++) {
 		            printf("%c ", palavraOculta[i]);
 		        }
-		        printf("\n\nAs letras ja colocadas são: ");
+		        printf("\n\nAs letras ja colocadas sÃ£o: ");
 		    	for(int i = 0; i <= j - 1; i++){
 		    		printf("%c ", letra[i]);
 				}
@@ -405,10 +406,11 @@ int main() {
 		    	}
 		
 		    printf("A palavra era: %s\n", palavraSecreta);
-		    printf("O primeiro lugar é: %c %d pontos\n", pontosp2p[maiorP]);
-		    printf("Em segundo lugar teve: %d pontos\n",pontosp2p[menorP]);
+		    system("pause");
 		   
 		}
+		printf("O primeiro lugar Ã©: %c %d pontos\n", pontosp2p[maiorP]);
+		printf("Em segundo lugar teve: %d pontos\n",pontosp2p[menorP]);
 	}
 	if(pessoas == 1){
 		const char *listaPalavras[] = {
@@ -441,9 +443,9 @@ int main() {
 		    "elefante",
 			"girafa",
 			"canguru",
-			"tubarão",
+			"tubarÃ£o",
 			"arara",
-			"leão",
+			"leÃ£o",
 			"coruja",
 			"camaleao",
 			"abacaxi",
@@ -455,14 +457,14 @@ int main() {
 			"kiwi",
 			"melancia",
 			"brasil",
-			"canadá",
-			"japão",
-			"frança",
+			"canadÃ¡",
+			"japÃ£o",
+			"franÃ§a",
 			"india",
 			"egito",
-			"itália",
-			"méxico",
-			"médico",
+			"itÃ¡lia",
+			"mÃ©xico",
+			"mÃ©dico",
 			"professor",
 			"engenheiro",
 			"advogado",
@@ -483,7 +485,7 @@ int main() {
 		
 		    int totalPalavras = sizeof(listaPalavras) / sizeof(listaPalavras[0]);
 		
-		    //Inicializa o gerador de números aleatórios
+		    //Inicializa o gerador de nÃºmeros aleatÃ³rios
 		    srand(time(NULL));
 		    int indice = rand() % totalPalavras;
 		
@@ -516,7 +518,7 @@ int main() {
 		        for (int i = 0; i < tamanho; i++) {
 		            printf("%c ", palavraOculta[i]);
 		        }
-		        printf("\n\nAs letras ja colocadas são: ");
+		        printf("\n\nAs letras ja colocadas sÃ£o: ");
 		    	for(int i = 0; i <= j - 1; i++){
 		    		printf("%c ", letra[i]);
 				}
@@ -565,20 +567,20 @@ int main() {
 		    printf("A palavra era: %s\n", palavraSecreta);
 		    printf("deseja continuar?\n");	//caso a pessoa deja continuar
 		    printf("1 - sim\n");
-		    printf("2 - não\n");
+		    printf("2 - nÃ£o\n");
 		    scanf("%d", &continuar);
 		    
 		    
 		    
 		    if(continuar <1 || continuar >2){
-		    	printf("Digite um número correto!\n");
+		    	printf("Digite um nÃºmero correto!\n");
 		    	printf("Digite novamente\n");
 		    	scanf("%d", continuar);
 			}
 			
 		
 		    if(continuar == 1 ){
-		    	main(); // Chama a função inicial
+		    	main(); // Chama a funÃ§Ã£o inicial
 		    	return 0;
 			} else if( continuar == 2){
 						return 0;
@@ -586,6 +588,5 @@ int main() {
 	}
 	return 0;
 }	
-
 
 
