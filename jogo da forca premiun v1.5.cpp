@@ -6,7 +6,7 @@
 #include <locale.h>
 #include <iostream>
 
-//Feito por João Victor Dalbem
+//Feito por João Victor Dalbem e Guilherme Duque
 //Forca feito em c++
 
 
@@ -24,15 +24,14 @@ void limpaTela() {
     #endif
 }
 
-void TROCA(int p1, int p2) {
-	troca = a;
-	a = b;
-	b = troca; 
+	typedef struct{
+		char nome[50];
+		int pontos;
+	}jogador;
 	
-	
-	
-}
 
+void TROCA(jogador *x, jogador *y);
+void classifica();
 
 
 int main() {
@@ -45,12 +44,10 @@ int main() {
 	int mediaP = 0;
 	
 	
-	typedef struct{
-		char nome[50];
-		int pontos;
-	}jogador;
-	
+
 	jogador player[3],*p1,*p2,*p3,troca;
+	for(int i; i <=2; i++)
+		player[i].pontos = 0;
     
     
     printf("------Deseja jogar contra  quantas pessoas?------\n"); //quantidade de jogadores
@@ -66,19 +63,19 @@ int main() {
 	}
 	
 	printf("Digite o primeiro nome: ");
-    fgets(player1.nome, sizeof(player1.nome) , stdin);
+    fgets(player[0].nome, sizeof(player[0].nome) , stdin);
     fflush(stdin);
     
     printf("\n");
     if(pessoas >= 2){
     	printf("Digite o segundo nome: ");
-    	fgets(player2.nome, sizeof(player2.nome), stdin);
+    	fgets(player[1].nome, sizeof(player[1].nome), stdin);
 		fflush(stdin);
 	}
 	printf("\n");
 	if(pessoas == 3){
     	printf("Digite o terceiro nome: ");
-    	fgets(player3.nome,sizeof(player3.nome), stdin);
+    	fgets(player[2].nome,sizeof(player[2].nome), stdin);
     	fflush(stdin);
     
     	printf("\n");
@@ -87,7 +84,7 @@ int main() {
 	}
 	
    if(pessoas == 3){
-		for(int i = 0;i<3;i++){
+		for(int a = 0;a<3;a++){
 		    const char *listaPalavras[] = {
 		        "computador",
 		        "programacao",
@@ -175,7 +172,7 @@ int main() {
 		    int j = 0;
 		    char chute;
 		    char letra[20];
-		    int pontos = 2;
+		    int pontos = 0;
 		    int continuar = 0;
 		    
 		    
@@ -219,10 +216,10 @@ int main() {
 		        
 		        if (!acertou) {
 		            tentativas++;
-		            vetPontos[i] -= 1;
+		            player[a].pontos -= 1;
 		            printf("Letra incorreta!\n");
 		        } else {
-		        	vetPontos[i] =+ 3;
+		        	player[a].pontos += 3;
 		            printf("Boa! Letra correta!\n");
 		        }
 		        
@@ -232,38 +229,22 @@ int main() {
 		        getchar(); // consome o '\n' anterior
 		        getchar(); // espera o Enter
 			}
-			pontosp2p[i] = vetPontos[i];
+			pontosp2p[a] = player[a].pontos;
 		        
-		        if(pontosp2p[i] < pontosp2p[menorP]){
-		        	menorP = i;
-				} else if (pontosp2p[i] > pontosp2p[maiorP]){
-					maiorP = i;
-				} else if (pontosp2p[i] == pontosp2p[mediaP]){
-					mediaP = i;
-				}
-				
-			
-			
-			
-		
-		    
-			
+
 		    printf("A palavra era: %s\n", palavraSecreta);
 		    system("pause");
 		    
 		    
 		    
 		}
-		printf("O jogador %s teve: %d pontos\n", nome[0], vetPontos[0]);
-		printf("O jogador %s teve: %d pontos\n", nome[1], vetPontos[1]);
-		printf("O jogador %s teve: %d pontos\n", nome[2], vetPontos[2]);
-		printf("Em primiro lugar teve: %d pontos\n", pontosp2p[maiorP]);
-		printf("Em segundo lugar teve: %d pontos\n",pontosp2p[mediaP]);
-		printf("Em terceiro lugar teve: %d pontos\n",pontosp2p[menorP]);
+		printf("O jogador %s teve: %d pontos\n", player[0].nome, player[0].pontos);
+		printf("O jogador %s teve: %d pontos\n", player[1].nome, player[1].pontos);
+		printf("O jogador %s teve: %d pontos\n", player[2].nome, player[2].pontos);
 	}
 	
 	if(pessoas == 2){
-		for(int i = 0;i<2;i++){
+		for(int a = 0;a<2;a++){
 		    const char *listaPalavras[] = {
 		        "computador",
 		        "programacao",
@@ -407,12 +388,12 @@ int main() {
 		        getchar(); // consome o '\n' anterior
 		        getchar(); // espera o Enter
 			}
-			pontosp2p[i] = pontos;
+			pontosp2p[a] = pontos;
 		        
-		        if(pontosp2p[i] < pontosp2p[menorP]){
-		        	menorP = i;
-				} else if (pontosp2p[i] > pontosp2p[maiorP]){
-					maiorP = i;
+		        if(pontosp2p[a] < pontosp2p[menorP]){
+		        	menorP = a;
+				} else if (pontosp2p[a] > pontosp2p[maiorP]){
+					maiorP = a;
 				}
 			
 			
@@ -562,10 +543,10 @@ int main() {
 		        
 		        if (!acertou) {
 		            tentativas++;
-		            player1.pontos -= 1;
+		            player[0].pontos -= 1;
 		            printf("Letra incorreta!\n");
 		        } else {
-		        	player.pontos += 3;
+		        	player[0].pontos += 3;
 		            printf("Boa! Letra correta!\n");
 		        }
 		        
@@ -578,9 +559,9 @@ int main() {
 			
 		
 		    if (letrasAcertadas == tamanho) {
-		        printf("Parabens! %s Voce venceu!\nTeve %d pontos \n",player1.nome,player1.pontos);
+		        printf("Parabens! %s Voce venceu!\nTeve %d pontos \n",player[0].nome,player[0].pontos);
 		    }	else {
-		        	printf("Voce perdeu!\n%s teve %d pontos :( \n",player1.nome, player1.pontos);
+		        	printf("Voce perdeu!\n%s teve %d pontos :( \n",player[0].nome, player[0].pontos);
 		    	}
 		
 		    printf("A palavra era: %s\n", palavraSecreta);
@@ -607,6 +588,18 @@ int main() {
 	}
 	return 0;
 }	
+void TROCA(jogador *x, jogador *y) {
+
+	jogador temp;	
+	temp = *x;
+	*x = *y;
+	*y = temp;
+}
+
+
+void classifica(){
+	
+}
 
 
 
