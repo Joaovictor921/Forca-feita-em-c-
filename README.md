@@ -1,13 +1,12 @@
-# 🎮 Jogo da Forca em C++
+# 🎮 Jogo da Forca Multiplayer em C++
 
-Projetos de **Jogo da Forca** desenvolvidos em C++, com uma versão
-tradicional para terminal e uma versão **multiplayer em rede**,
-permitindo que dois jogadores utilizem computadores ou terminais
-diferentes.
+Projeto acadêmico de **Jogo da Forca Multiplayer** desenvolvido em C++,
+com suporte para dois jogadores, comunicação em rede e uso de memória
+compartilhada entre processos no Windows.
 
-O projeto foi desenvolvido como prática de lógica de programação,
-estruturas de dados, entrada e saída no terminal e, na versão
-multiplayer, comunicação entre computadores por sockets TCP.
+O projeto evolui a versão tradicional do Jogo da Forca para uma
+arquitetura **cliente/servidor**, mantendo o estado da partida
+sincronizado entre os jogadores.
 
 ## 👨‍💻 Autores
 
@@ -16,196 +15,393 @@ multiplayer, comunicação entre computadores por sockets TCP.
 
 ------------------------------------------------------------------------
 
-# 📚 Versões do projeto
+# 📌 Objetivo do projeto
 
-  -----------------------------------------------------------------------
-  Versão                              Descrição
-  ----------------------------------- -----------------------------------
-  🎯 **Normal**                       Jogo da Forca tradicional executado
-                                      em um único terminal
+O objetivo é demonstrar, de forma prática, dois conceitos principais:
 
-  🌐 **Multiplayer**                  Jogo da Forca para dois jogadores
-                                      usando comunicação em rede
-  -----------------------------------------------------------------------
+1.  **Memória compartilhada entre processos**
+2.  **Comunicação entre processos**
+
+Para isso, o projeto utiliza uma abordagem híbrida:
+
+``` text
+                     JOGO DA FORCA
+                           │
+             ┌─────────────┴─────────────┐
+             │                           │
+      MEMÓRIA COMPARTILHADA         COMUNICAÇÃO TCP
+             │                           │
+      Windows / Processos            Winsock / Rede
+             │                           │
+             └─────────────┬─────────────┘
+                           │
+                    SERVIDOR + CLIENTE
+```
 
 ------------------------------------------------------------------------
 
-# 🎯 Jogo da Forca Normal
+# 🧠 Memória compartilhada
 
-A versão normal é baseada no jogo da forca tradicional.
+No Windows, o projeto utiliza uma região nomeada de memória
+compartilhada através de:
 
-## ✨ Recursos
+``` cpp
+CreateFileMappingA()
+MapViewOfFile()
+OpenFileMappingA()
+```
 
--   Seleção aleatória de palavras
--   Palavra inicialmente escondida
--   Entrada de letras pelo terminal
--   Controle das letras já utilizadas
--   Até **8 tentativas**
--   Sistema de pontuação
--   Possibilidade de jogar novamente
--   Suporte ao modo com até **3 jogadores**
--   Lista de palavras relacionada a tecnologia, animais, frutas, países,
-    profissões, cores e outros temas
+O acesso à memória é protegido por um mutex nomeado utilizando:
+
+``` cpp
+CreateMutexA()
+OpenMutexA()
+WaitForSingleObject()
+ReleaseMutex()
+```
+
+A memória compartilhada contém o **estado público da partida**, como:
+
+-   Palavra mascarada
+-   Letras utilizadas
+-   Turno atual
+-   Pontuação dos jogadores
+-   Quantidade de erros
+-   Nomes dos jogadores
+-   Estado final da partida
+
+### Mesmo computador
+
+Quando os dois processos são executados no mesmo PC, o servidor cria a
+região de memória e o cliente pode abrir a mesma região nomeada.
+
+``` text
+┌──────────────────────┐
+│ Processo Servidor    │
+│                      │
+│  Memória Compartilhada
+└──────────┬───────────┘
+           │
+           │ mesma região
+           │
+┌──────────▼───────────┐
+│ Processo Cliente     │
+└──────────────────────┘
+```
+
+### Dois computadores
+
+Uma região de memória física não pode ser compartilhada diretamente
+entre dois computadores diferentes.
+
+Por isso, quando a partida ocorre em dois PCs:
+
+``` text
+PC 1                          PC 2
+Servidor                      Cliente
+   │                             │
+   │ Memória local               │ Memória local
+   │                             │
+   └────────── TCP/IP ───────────┘
+            sincronização
+```
+
+Cada computador mantém sua memória local e o estado entre as máquinas é
+sincronizado por TCP/IP.
+
+------------------------------------------------------------------------
+
+# 🌐 Comunicação entre processos
+
+A comunicação cliente/servidor utiliza **TCP/IP com Winsock**.
+
+Principais funções utilizadas:
+
+``` cpp
+socket()
+bind()
+listen()
+accept()
+connect()
+send()
+recv()
+```
+
+O modelo é:
+
+``` text
+              TCP/IP
+                │
+       ┌────────┴────────┐
+       │                 │
+   🖥️ PC 1             🖥️ PC 2
+   SERVIDOR             CLIENTE
+       │                 │
+       └───────┬─────────┘
+               │
+          Estado do jogo
+```
+
+O servidor é responsável por manter o estado oficial da partida e
+processar as jogadas.
+
+------------------------------------------------------------------------
+
+# 🎮 Regras do jogo
+
+## 👥 Jogadores
+
+A versão multiplayer possui dois jogadores:
+
+-   **Time 1:** servidor
+-   **Time 2:** cliente
+
+Cada jogador realiza uma jogada por turno.
+
+------------------------------------------------------------------------
+
+## 🔤 Letras
+
+O jogador informa uma letra por vez.
+
+Letras maiúsculas são automaticamente convertidas para minúsculas:
+
+``` text
+A → a
+B → b
+C → c
+```
+
+Assim:
+
+``` text
+A = a
+```
+
+Uma letra que já foi utilizada não pode ser escolhida novamente e **não
+consome o turno**.
+
+------------------------------------------------------------------------
 
 ## 🏆 Pontuação
 
-A pontuação segue a lógica do projeto original:
-
--   ✅ Letra correta: **+3 pontos**
--   ❌ Letra incorreta: **-1 ponto**
-
-## 🕹️ Como jogar
-
-Compile o arquivo da versão normal e execute pelo terminal.
-
-Exemplo:
-
-``` bash
-g++ jogo_da_forca.cpp -std=c++11 -o forca
-```
-
-No Windows, utilizando MinGW:
-
-``` bash
-g++ jogo_da_forca.cpp -std=c++11 -o forca.exe
-```
-
-Depois:
-
-``` bash
-./forca
-```
-
-No Windows:
-
-``` bash
-forca.exe
-```
-
-> O nome do arquivo pode variar conforme a organização do projeto.
-
-------------------------------------------------------------------------
-
-# 🌐 Jogo da Forca Multiplayer
-
-A versão multiplayer transforma o jogo em uma partida entre **dois
-terminais ou dois computadores**.
-
-Um computador funciona como **servidor** e o outro como **cliente**.
-
-``` text
-                 🌐 REDE LOCAL
-                      │
-          ┌───────────┴───────────┐
-          │                       │
-     🖥️ PC 1                  🖥️ PC 2
-     SERVIDOR                  CLIENTE
-          │                       │
-          └───────────┬───────────┘
-                      │
-                ESTADO DO JOGO
-                      │
-        ┌─────────────┼─────────────┐
-        │             │             │
-     Palavra       Pontuação      Turno
-     oculta        compartilhada   atual
-```
-
-## ✨ Recursos
-
--   👥 Dois jogadores
--   🖥️ Dois computadores ou dois terminais
--   🌐 Comunicação por TCP
--   🔄 Estado da partida sincronizado
--   🔤 Uma letra por turno
--   🏆 Pontuação compartilhada
--   ❤️ Controle de tentativas
--   📝 Controle das letras utilizadas
--   🔒 Palavra não é exibida durante a partida
--   🏁 Resultado da partida ao final
--   💻 Compatibilidade com Windows/MinGW
-
-## 🔄 Como funciona
-
-### 1. Servidor
-
-O primeiro jogador inicia o programa e escolhe:
-
-``` text
-1 - Criar servidor
-```
-
-O servidor aguarda a conexão do segundo jogador.
-
-### 2. Cliente
-
-O segundo jogador inicia o programa e escolhe:
-
-``` text
-2 - Entrar no servidor
-```
-
-Depois informa o endereço IP do computador que está executando o
-servidor.
-
-Exemplo:
-
-``` text
-IP do servidor: 10.7.11.22
-```
-
-### 3. Partida
-
-Depois da conexão, os dois jogadores recebem o mesmo estado da partida.
-
-Cada jogador joga **uma letra por turno**.
-
-Exemplo:
-
-``` text
-=============================================
-             JOGO DA FORCA ONLINE
-=============================================
-
-Palavra: _ _ _ _ _ _ _ _
-
-Letras usadas: A E R
-
-Tentativas restantes: 6
-
----------------- PLACAR ----------------
-Time 1: 6 pontos
-Time 2: 3 pontos
-
-Turno: Time 2
-Digite uma letra:
-```
-
-Quando o jogador acerta:
+### Acerto normal
 
 ``` text
 +3 pontos
 ```
 
-Quando erra:
+### Erro
 
 ``` text
 -1 ponto
++1 erro
 ```
 
-Uma tentativa é perdida quando a letra escolhida não pertence à palavra.
+Na fase final:
+
+``` text
+Letra correta: +5 pontos
+Palavra inteira correta: +3 pontos
+```
 
 ------------------------------------------------------------------------
 
-# 🔌 Testando no mesmo computador
+# 🔥 Fase final
 
-É possível testar o multiplayer sem dois computadores.
+Quando restam **2 letras diferentes ou menos** para descobrir, começa a
+fase final.
 
-Abra **dois terminais**.
+O jogador da vez recebe duas opções:
+
+``` text
+1 - Chutar a palavra inteira
+2 - Chutar uma letra
+```
+
+### Palavra inteira
+
+Se acertar:
+
+``` text
++5 pontos
+```
+
+A rodada termina imediatamente.
+
+Se errar:
+
+``` text
+-1 ponto
++1 erro
+```
+
+### Letra
+
+Se acertar:
+
+``` text
++5 pontos
+```
+
+Se errar:
+
+``` text
+-1 ponto
++1 erro
+```
+
+------------------------------------------------------------------------
+
+# ☠️ Sistema de erros
+
+Cada time possui seu **próprio contador de erros** e seu próprio desenho
+de personagem.
+
+``` text
+TIME 1
+Erros: 3/8
+
+TIME 2
+Erros: 5/8
+```
+
+O contador não é compartilhado como uma única quantidade global.
+
+O desenho do personagem evolui conforme os erros aumentam.
+
+Cada time possui um desenho diferente para facilitar a identificação
+visual durante a partida.
+
+------------------------------------------------------------------------
+
+# 🔒 Palavra secreta
+
+Durante a partida, a palavra verdadeira permanece escondida.
+
+O estado enviado aos jogadores contém apenas a palavra mascarada:
+
+``` text
+_ _ _ _ _ _ _
+```
+
+Exemplo após alguns acertos:
+
+``` text
+p r _ g r a m a
+```
+
+A palavra completa é revelada apenas quando a rodada termina.
+
+------------------------------------------------------------------------
+
+# 🔄 Jogar novamente
+
+Depois que a rodada termina, os jogadores recebem a opção:
+
+``` text
+Deseja jogar novamente?
+
+1 - Sim
+2 - Nao
+```
+
+A nova rodada só começa quando os dois jogadores concordarem.
+
+A pontuação acumulada permanece entre as rodadas e uma nova palavra é
+sorteada.
+
+------------------------------------------------------------------------
+
+# 🖥️ Como executar
+
+## Requisitos
+
+-   Windows
+-   Dev-C++ ou MinGW
+-   C++11
+-   Winsock
+-   Biblioteca `ws2_32`
+
+------------------------------------------------------------------------
+
+## ⚙️ Compilação
+
+Com MinGW:
+
+``` bash
+g++ jogo_forca_multiplayer.cpp -std=c++11 -O2 -o forca.exe -lws2_32
+```
+
+No Dev-C++, o projeto `.dev` já pode ser usado para facilitar a
+configuração.
+
+------------------------------------------------------------------------
+
+# 🌐 Como jogar em dois computadores
+
+## PC 1
+
+Abra o programa e escolha:
+
+``` text
+1 - Criar servidor
+```
+
+Digite o nome do Time 1.
+
+O servidor ficará aguardando a conexão.
+
+## PC 2
+
+Abra o programa e escolha:
+
+``` text
+2 - Entrar no servidor
+```
+
+Digite o nome do Time 2.
+
+Depois informe o endereço IPv4 do PC 1.
+
+Para descobrir o IP do servidor:
+
+``` cmd
+ipconfig
+```
+
+Exemplo:
+
+``` text
+Endereço IPv4: 10.7.11.22
+```
+
+No PC 2:
+
+``` text
+IP do servidor: 10.7.11.22
+```
+
+A porta utilizada pelo jogo é:
+
+``` text
+54000
+```
+
+### ⚠️ Firewall
+
+Caso o Windows bloqueie a conexão, permita o programa na rede privada ou
+libere a porta TCP `54000` no firewall.
+
+------------------------------------------------------------------------
+
+# 🧪 Teste no mesmo computador
+
+Também é possível testar o multiplayer sem dois PCs.
+
+Abra dois terminais.
 
 ### Terminal 1
-
-Inicie o programa e escolha:
 
 ``` text
 1 - Criar servidor
@@ -213,13 +409,11 @@ Inicie o programa e escolha:
 
 ### Terminal 2
 
-Inicie outra cópia do programa e escolha:
-
 ``` text
 2 - Entrar no servidor
 ```
 
-Utilize:
+Use:
 
 ``` text
 127.0.0.1
@@ -227,157 +421,151 @@ Utilize:
 
 como endereço do servidor.
 
-`127.0.0.1` representa o próprio computador e é útil para testar a
-comunicação antes de utilizar uma rede real.
-
 ------------------------------------------------------------------------
 
-# 🖥️ Jogando em dois computadores
-
-Os dois computadores precisam conseguir se comunicar pela mesma rede
-local.
-
-No computador que executa o servidor, descubra o IPv4 com:
-
-``` cmd
-ipconfig
-```
-
-Procure algo semelhante a:
+# 📁 Estrutura do projeto
 
 ``` text
-Endereço IPv4 . . . . . . . . . . : 10.7.11.22
-```
-
-No segundo computador, informe esse endereço quando o jogo solicitar o
-IP do servidor.
-
-Exemplo:
-
-``` text
-10.7.11.22
-```
-
-> Se o Windows Firewall solicitar permissão para o programa, permita o
-> acesso à rede privada para que os computadores possam estabelecer a
-> conexão.
-
-------------------------------------------------------------------------
-
-# ⚙️ Tecnologias utilizadas
-
-## Versão normal
-
--   C++
--   Terminal
--   `stdio.h`
--   `string.h`
--   `ctype.h`
--   `stdlib.h`
--   `time.h`
--   `locale.h`
-
-## Versão multiplayer
-
-Além dos recursos básicos de C++, utiliza:
-
--   C++
--   C++11
--   TCP/IP
--   Windows Sockets (Winsock)
--   `winsock2.h`
--   `ws2tcpip.h`
--   Comunicação cliente/servidor
-
-No Windows, a biblioteca de sockets utilizada é:
-
-``` text
-ws2_32
-```
-
-------------------------------------------------------------------------
-
-# 🧠 Conceitos praticados
-
-O projeto foi desenvolvido para praticar conceitos importantes de
-programação:
-
--   Variáveis
--   Vetores
--   Strings
--   Estruturas (`struct`)
--   Funções
--   Ponteiros
--   Loops
--   Condicionais
--   Geração de números aleatórios
--   Manipulação de caracteres
--   Controle de estado do jogo
--   Entrada e saída pelo terminal
--   Comunicação em rede
--   Arquitetura cliente/servidor
--   Sincronização de informações entre jogadores
-
-------------------------------------------------------------------------
-
-# 📁 Estrutura sugerida do repositório
-
-``` text
-Jogo-da-Forca/
+JogoDaForca/
 │
-├── normal/
-│   └── jogo_da_forca.cpp
-│
-├── multiplayer/
-│   ├── jogo_forca_multiplayer.cpp
-│   └── JogoForca.dev
-│
+├── jogo_forca_multiplayer.cpp
+├── JogoForca.dev
+├── compilar.bat
+├── LEIA-ME.txt
+├── REQUISITOS.md
 └── README.md
 ```
 
 ------------------------------------------------------------------------
 
-# 🚀 Possíveis melhorias
+# 🧩 Arquitetura
 
-Algumas ideias para futuras versões:
+## Servidor
 
--   [ ] Interface gráfica
--   [ ] Sistema de categorias
--   [ ] Banco de palavras maior
--   [ ] Sistema de ranking
--   [ ] Salvar pontuações
--   [ ] Mais jogadores online
--   [ ] Criar salas privadas
--   [ ] Código de sala para conexão
--   [ ] Chat entre jogadores
--   [ ] Efeitos sonoros
--   [ ] Animação da forca
--   [ ] Reconexão automática
--   [ ] Versão multiplataforma
--   [ ] Interface web
+O servidor:
+
+1.  Inicializa o Winsock
+2.  Cria o socket
+3.  Abre a porta `54000`
+4.  Aguarda a conexão do cliente
+5.  Recebe o nome do Time 2
+6.  Sorteia a palavra
+7.  Mantém o estado oficial da partida
+8.  Processa as jogadas
+9.  Atualiza a memória compartilhada
+10. Envia o estado ao cliente
+11. Controla o encerramento e o replay
+
+## Cliente
+
+O cliente:
+
+1.  Inicializa o Winsock
+2.  Cria o socket
+3.  Informa o IP do servidor
+4.  Conecta ao servidor
+5.  Envia o nome do Time 2
+6.  Recebe o estado da partida
+7.  Atualiza a memória local
+8.  Mostra a palavra mascarada
+9.  Envia a jogada quando for seu turno
+10. Aguarda a atualização do servidor
 
 ------------------------------------------------------------------------
 
-# 📜 Objetivo acadêmico
+# 📚 Conceitos utilizados
+
+Este projeto trabalha conceitos de:
+
+-   C++
+-   Structs
+-   Strings
+-   Vetores
+-   Funções
+-   Condicionais
+-   Loops
+-   Aleatoriedade
+-   Tratamento de entrada
+-   Sockets
+-   TCP/IP
+-   Winsock
+-   Cliente/servidor
+-   Comunicação entre processos
+-   Memória compartilhada
+-   Mutex
+-   Sincronização de estado
+
+------------------------------------------------------------------------
+
+# 📈 Evolução do projeto
+
+O projeto começou com uma versão tradicional do Jogo da Forca executada
+localmente.
+
+A evolução foi:
+
+``` text
+🎯 Jogo da Forca Normal
+          ↓
+👥 Sistema de jogadores
+          ↓
+🏆 Sistema de pontuação
+          ↓
+🔤 Controle de letras
+          ↓
+🌐 Comunicação cliente/servidor
+          ↓
+🧠 Memória compartilhada
+          ↓
+🎮 Jogo da Forca Multiplayer
+```
+
+------------------------------------------------------------------------
+
+# 🎓 Objetivo acadêmico
 
 O projeto foi desenvolvido como uma aplicação prática de conceitos de
-programação em C++, evoluindo de uma implementação tradicional do jogo
-da forca para uma arquitetura cliente/servidor capaz de compartilhar o
-estado de uma partida entre dois jogadores.
+**programação em C++**, **comunicação entre processos** e **memória
+compartilhada**.
 
-A versão multiplayer amplia o projeto original ao introduzir conceitos
-de **redes de computadores e comunicação por sockets**, mantendo a
-mecânica principal do jogo.
+A versão multiplayer foi estruturada para demonstrar:
+
+``` text
+MEMÓRIA COMPARTILHADA
+          +
+COMUNICAÇÃO TCP/IP
+          =
+PARTIDA MULTIPLAYER
+```
+
+A implementação utiliza memória compartilhada real entre processos
+quando os processos estão no mesmo computador e utiliza TCP/IP para
+sincronizar os estados quando os jogadores estão em computadores
+diferentes.
 
 ------------------------------------------------------------------------
 
-## ⭐ Sobre o projeto
+# 🚀 Possíveis melhorias
 
-Este repositório reúne as duas versões do jogo:
+-   [ ] Sistema de salas
+-   [ ] Código de sala
+-   [ ] Mais jogadores
+-   [ ] Ranking
+-   [ ] Chat
+-   [ ] Categorias
+-   [ ] Banco maior de palavras
+-   [ ] Interface gráfica
+-   [ ] Sons
+-   [ ] Animações
+-   [ ] Reconexão automática
+-   [ ] Histórico de partidas
 
-**🎯 Normal:** simples, direto e executado localmente.
+------------------------------------------------------------------------
 
-**🌐 Multiplayer:** dois jogadores, dois terminais e uma única partida
-compartilhada pela rede.
+## 🎮 Status do projeto
 
-Divirta-se e bom jogo! 🎮
+**Versão multiplayer funcional para Windows.**
+
+O projeto foi desenvolvido para demonstrar, na prática, o uso conjunto
+de **memória compartilhada, sincronização e comunicação por sockets
+TCP/IP** em uma aplicação multiplayer.
