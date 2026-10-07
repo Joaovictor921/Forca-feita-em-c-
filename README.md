@@ -202,7 +202,7 @@ Na fase final:
 
 ``` text
 Letra correta: +5 pontos
-Palavra inteira correta: +5 pontos
+Palavra inteira correta: +3 pontos
 ```
 
 ------------------------------------------------------------------------
