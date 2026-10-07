@@ -201,8 +201,8 @@ consome o turno**.
 Na fase final:
 
 ``` text
-Letra correta: +5 pontos
-Palavra inteira correta: +3 pontos
+Letra correta: +3 pontos
+Palavra inteira correta: +5 pontos
 ```
 
 ------------------------------------------------------------------------
@@ -241,7 +241,7 @@ Se errar:
 Se acertar:
 
 ``` text
-+5 pontos
++3 pontos
 ```
 
 Se errar:
