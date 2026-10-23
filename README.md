@@ -634,20 +634,47 @@ diferentes.
 
 ------------------------------------------------------------------------
 
-# 🚀 Possíveis melhorias
+## 🚀 Possíveis melhorias
 
--   [ ] Sistema de salas
--   [ ] Código de sala
--   [ ] Mais jogadores
--   [ ] Ranking
--   [ ] Chat
--   [ ] Categorias
--   [ ] Banco maior de palavras
--   [ ] Interface gráfica
--   [ ] Sons
--   [ ] Animações
--   [ ] Reconexão automática
--   [ ] Histórico de partidas
+### 🎯 Jogabilidade
+- [ ] **Chutar a palavra a qualquer momento**: hoje o chute da palavra inteira só vale na fase final (2 letras ou menos faltando). A ideia é liberar em qualquer ponto da rodada, talvez com penalidade maior para o chute errado.
+- [ ] **Tempo por jogada**: limite de 20 a 30 segundos; quem estoura perde a vez
+- [ ] **Partida em rodadas**: salas "melhor de 5" ou "primeiro a 50 pontos", com tela de campeão
+- [ ] **Modo "palavra do jogador"**: um jogador digita a palavra secreta e os outros tentam adivinhar
+- [ ] **Dificuldade**: filtrar palavras por tamanho ou nível
+- [ ] **Modos de equipe**: 2x2 ou 3x3, com pontos somados por time
+- [ ] **Espectadores**: entrar só para assistir uma rodada em andamento
+
+### 🌐 Salas e rede
+- [ ] **Reconexão**: voltar para a mesma sala depois de cair, sem perder pontos
+- [ ] **Descoberta automática de servidores** na rede local, sem digitar IP
+- [ ] **Servidor público** na internet
+- [ ] **Senha na sala**, além do código
+- [ ] **Expulsar jogador** e **transferir o dono** da sala
+- [ ] **Conexão criptografada**
+
+### 🏆 Ranking e contas
+- [ ] **Identificação mais segura** do jogador (PIN), já que hoje o ranking vale pelo nome
+- [ ] **Ranking por período** (semanal e mensal)
+- [ ] **Estatísticas por jogador**: taxa de acerto, letras mais usadas
+- [ ] **Conquistas**: "venceu sem errar", "acertou na fase final" etc.
+
+### 🗂️ Palavras
+- [ ] **Exibir palavras com acento** corretamente
+- [ ] **Categorias personalizadas por sala** e importação de listas pelo próprio jogo
+
+### 🎨 Interface
+- [ ] **Janela gráfica** (SDL2 ou Win32), com forca desenhada e cliques
+- [ ] **Versão web**, jogável no navegador
+- [ ] **Temas de cores** e **modo acessível** (mais contraste, sem depender só de cor)
+- [ ] **Emojis/reações rápidas** e histórico de chat maior
+
+### 🛠️ Técnico
+- [ ] **Build automático do `.exe`** no GitHub a cada release
+- [ ] **Testes automáticos** no repositório
+- [ ] **Código dividido em vários arquivos** (servidor, cliente, palavras)
+- [ ] **Arquivo de configuração** com nome, último IP e preferências de som, animação e cor
+- [ ] **Salvar e retomar partidas**
 
 ------------------------------------------------------------------------
 
