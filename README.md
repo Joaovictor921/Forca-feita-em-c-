@@ -639,8 +639,6 @@ diferentes.
 ### 🎮 Jogabilidade
 - [ ] **Modo cooperativo**: todos contra a forca, com uma única forca compartilhada
 - [ ] **Morte súbita**: a cada erro, o tempo da jogada diminui
-- [ ] **Bots**: jogadores controlados pelo computador, para completar a sala
-- [ ] **Votação para pular palavra** que ninguém conhece
 - [ ] **Torneios** com chaveamento entre várias salas
 - [ ] **Categorias e palavras personalizadas por sala**
 - [ ] **Não repetir palavras** já usadas, mesmo entre sessões
