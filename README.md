@@ -636,6 +636,15 @@ diferentes.
 
 ## 🚀 Possíveis melhorias
 
+### 🎮 Jogabilidade
+- [ ] **Modo cooperativo**: todos contra a forca, com uma única forca compartilhada
+- [ ] **Morte súbita**: a cada erro, o tempo da jogada diminui
+- [ ] **Bots**: jogadores controlados pelo computador, para completar a sala
+- [ ] **Votação para pular palavra** que ninguém conhece
+- [ ] **Torneios** com chaveamento entre várias salas
+- [ ] **Categorias e palavras personalizadas por sala**
+- [ ] **Não repetir palavras** já usadas, mesmo entre sessões
+
 ### 🌐 Salas e rede
 - [ ] **Descoberta automática de servidores** na rede local, sem digitar IP
 - [ ] **Servidor público** na internet
@@ -652,6 +661,14 @@ diferentes.
 - [ ] **Janela gráfica** (SDL2 ou Win32), com forca desenhada e cliques
 - [ ] **Versão web**, jogável no navegador
 - [ ] **Temas de cores** e **modo acessível** (mais contraste, sem depender só de cor)
+
+### 💬 Interação
+- [ ] **Mensagem privada** entre jogadores (`/p nome texto`)
+- [ ] **Comando `/regras`** mostrando a configuração atual da sala
+- [ ] **Aviso sonoro** quando faltarem 5 segundos para acabar a vez
+
+### 🎬 Extras
+- [ ] **Replay** da partida
 
 ### 🛠️ Técnico
 - [ ] **Build automático do `.exe`** no GitHub a cada release
